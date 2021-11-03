@@ -37,10 +37,29 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
        if(event?.sensor?.type==Sensor.TYPE_ACCELEROMETER){
-           val sides=event.values[0]*-20
-           val upDown=event.values[1]*20
+           var sides=event.values[0]
+           var upDown=event.values[1]
 
+           var color=Color.BLACK
+           if(upDown.toInt()==0 && sides.toInt()==0) color=Color.GRAY
+
+           else if(upDown.toInt()<0 && sides.toInt()==0) color=Color.RED
+           else if(upDown.toInt()>0 && sides.toInt()==0) color=Color.YELLOW
+
+           else if(sides.toInt()>0 && upDown.toInt()==0) color=Color.GREEN
+           else if(sides.toInt()<0 && upDown.toInt()==0) color=Color.BLUE
+
+           else color=Color.WHITE
+           /*
+           else if(upDown.toInt()<0 && sides.toInt()>0) color=Color.CYAN
+           else if(upDown.toInt()<0 && sides.toInt()<0) color=Color.MAGENTA
+           else if(upDown.toInt()>0 && sides.toInt()>0) color=Color.LTGRAY
+           else if(upDown.toInt()>0 && sides.toInt()<0) color=Color.LTGRAY
+           */
+           sides*=(-20)
+           upDown*=20
            ballView.ball.setSpeed(sides.toInt(), upDown.toInt())
+           ballView.ball.paint.setColor(color)
        }
     }
 
